@@ -1,36 +1,235 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Edito
 
-## Getting Started
+**Edito** is a real-time collaborative editor platform designed to be embedded into any application.
+Think of it as a plug-and-play collaboration layer — like Google Docs or Notion — but built for developers.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 🧠 What is Edito?
+
+Edito allows developers to add **real-time collaborative editing** to their apps using a simple React SDK.
+
+It provides:
+
+* ⚡ Real-time multi-user editing
+* 🧩 Embeddable editor component
+* 🧠 CRDT-based sync (conflict-free)
+* 💾 Persistent document storage
+
+---
+
+# 🏗️ Architecture
+
+Edito is built using a **monorepo architecture**:
+
+```
+edito/
+  apps/
+    edito-server      # Real-time backend (Hocuspocus + MongoDB)
+    edito-app         # Next.js playground/demo app
+  packages/
+    edito-sdk         # React SDK (main product)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# ⚙️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Core
 
-## Learn More
+* Node.js
+* React
+* TypeScript
+* MongoDB
 
-To learn more about Next.js, take a look at the following resources:
+### Real-time Collaboration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Yjs (CRDT engine)
+* Hocuspocus (WebSocket server)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Editor
 
-## Deploy on Vercel
+* BlockNote (rich text editor)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Tooling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* pnpm (workspace management)
+* Vite (SDK build)
+* Next.js (playground app)
+
+---
+
+# 🧩 Core Concepts
+
+## Workspace → Documents → Editor
+
+* A **workspace** contains multiple documents
+* Each document is identified by:
+
+  * `workspaceId`
+  * `docId` (provided by the client)
+
+---
+
+# 💾 Database Design
+
+### Collection: `documents`
+
+```
+{
+  _id: ObjectId,
+  workspaceId: string,
+  docId: string,
+  ydoc: Buffer, // Yjs binary
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Important
+
+* Unique index on:
+
+```
+{ workspaceId: 1, docId: 1 }
+```
+
+---
+
+# ⚡ Real-time Flow
+
+```
+User types → BlockNote → Yjs → Hocuspocus → MongoDB
+                                 ↓
+                          Other users sync
+```
+
+---
+
+# 📦 SDK Usage
+
+Install the SDK (future):
+
+```bash
+npm install edito-sdk
+```
+
+### Example
+
+```jsx
+import { EditoEditor } from "edito-sdk";
+
+export default function App() {
+  return (
+    <EditoEditor
+      workspaceId="ws-1"
+      docId="doc-1"
+      user={{ name: "Swayam" }}
+    />
+  );
+}
+```
+
+---
+
+# ⚡ Features (MVP)
+
+* ✅ Real-time collaboration
+* ✅ Multi-user editing
+* ✅ Cursor presence (awareness)
+* ✅ MongoDB persistence
+* ✅ Embeddable React SDK
+
+---
+
+# ❌ Not Included (Yet)
+
+* Authentication (JWT planned in V2)
+* Permissions & roles
+* Version history
+* Comments
+
+---
+
+# 🚀 Getting Started
+
+## 1. Install dependencies
+
+```bash
+pnpm install
+```
+
+---
+
+## 2. Start backend server
+
+```bash
+cd apps/edito-server
+pnpm dev
+```
+
+---
+
+## 3. Start playground app
+
+```bash
+cd apps/edito-app
+pnpm dev
+```
+
+---
+
+## 4. Open in browser
+
+```
+http://localhost:3000
+```
+
+Open the same document in multiple tabs to test real-time collaboration.
+
+---
+
+# 🔧 Environment Variables
+
+Create a `.env` file in `apps/edito-server`:
+
+```
+MONGO_URL=your_mongodb_connection_string
+PORT=1234
+```
+
+---
+
+# 🧠 How It Works
+
+* The SDK connects to the Hocuspocus WebSocket server
+* Documents are identified using:
+
+```
+workspaceId + docId
+```
+
+* Yjs handles conflict-free updates
+* Document state is stored as binary in MongoDB
+
+---
+
+# 🎯 Vision
+
+Edito aims to become:
+
+> “The collaboration layer for the internet”
+
+A developer-first platform where any app can enable real-time editing with minimal effort.
+
+---
+
+# 🤝 Contributing
+
+Contributions, ideas, and improvements are welcome!
+
+---
+
+# 📜 License
+
+MIT License
