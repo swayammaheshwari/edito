@@ -1,14 +1,13 @@
 import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
   build: {
     lib: {
       entry: "src/index.ts",
       name: "EditoSDK",
-      fileName: "index",
-    },
-    rollupOptions: {
-      external: ["react"],
-    },
+      fileName: "index"
+    }
   },
+  plugins: [dts()]
 });
