@@ -1,3 +1,2 @@
-export const EditoEditor = () => {
-  return "Hello from SDK 🚀";
-};
+export { CollaborativeEditor } from './CollaborativeEditor';
+export type { CollaborativeEditorProps } from './CollaborativeEditor';

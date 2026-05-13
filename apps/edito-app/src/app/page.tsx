@@ -1,4 +1,4 @@
-import { EditoEditor } from "edito-sdk";
+import { EditorDemo } from "@/components/EditorDemo";
 import type { JSX } from "react";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
@@ -18,7 +18,7 @@ export default function Home(): JSX.Element {
           </p>
         </div>
         <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-800 p-6">
-          <EditoEditor />
+          <EditorDemo />
         </div>
       </div>
     </main>

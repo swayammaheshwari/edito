@@ -8,8 +8,11 @@
     "emitDeclarationOnly": false,
     "esModuleInterop": true,
     "moduleResolution": "Node",
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
